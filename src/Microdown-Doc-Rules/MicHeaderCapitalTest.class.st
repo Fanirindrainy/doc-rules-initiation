@@ -136,3 +136,77 @@ MicHeaderCapitalTest >> testHeaderFullIsNotCorrectlyCapitalizedStopWords [
 		
 	
 ]
+
+{ #category : 'tests' }
+MicHeaderCapitalTest >> testLowercaseCorrectHeader [
+    | checker rule ast header |
+    rule := MicHeaderCapitalizeRule new.
+    rule shouldVerifyHeadersAreLowercase.
+
+    checker := MicRuleHeadChecker new.
+    checker addRule: rule.
+    checker verifyLowercase.
+
+    ast := Microdown parse: '# this is correct title'.
+    header := ast children first.
+    checker visitHeader: header.
+
+    self assert: checker errors isEmpty.
+
+]
+
+{ #category : 'tests' }
+MicHeaderCapitalTest >> testLowercaseIncorrectHeader [
+    | checker rule ast header |
+    rule := MicHeaderCapitalizeRule new.
+    rule shouldVerifyHeadersAreLowercase.
+
+    checker := MicRuleHeadChecker new.
+    checker addRule: rule.
+    checker verifyLowercase.
+
+    ast := Microdown parse: '# This Is Wrong'.
+    header := ast children first.
+    checker visitHeader: header.
+
+    self assert: checker errors size equals: 1.
+
+]
+
+{ #category : 'tests' }
+MicHeaderCapitalTest >> testUppercaseCorrectHeader [
+    | checker rule ast header |
+    rule := MicHeaderCapitalizeRule new.
+    rule addDefaultTextThatShouldNotBeCapitalized.
+    rule shouldVerifyHeadersAreCapitalized.
+
+    checker := MicRuleHeadChecker new.
+    checker addRule: rule.
+    checker verifyUppercase.
+
+    ast := Microdown parse: '# This Is Good Title'.
+    header := ast children first.
+    checker visitHeader: header.
+
+    self assert: checker errors isEmpty.
+
+]
+
+{ #category : 'tests' }
+MicHeaderCapitalTest >> testUppercaseIncorrectHeader [
+    | checker rule ast header |
+    rule := MicHeaderCapitalizeRule new.
+    rule addDefaultTextThatShouldNotBeCapitalized.
+    rule shouldVerifyHeadersAreCapitalized.
+
+    checker := MicRuleHeadChecker new.
+    checker addRule: rule.
+    checker verifyUppercase.
+
+    ast := Microdown parse: '# This is bad title'.
+    header := ast children first.
+    checker visitHeader: header.
+
+    self assert: checker errors size equals: 1.
+
+]

@@ -26,7 +26,7 @@ MicRuleHeadChecker >> checkFirstWord: aCollection of: anElement [
 	
 	aCollection first isCapitalized 
 		ifFalse: [ 
-			errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
+			errors add: (MicFirstElementOfHeaderIsNotCapitalReport new 
 						micElement: anElement; 
 						concern: aCollection first;
 						inFile: anElement fromFile)			
@@ -61,14 +61,14 @@ MicRuleHeadChecker >> initialize [
 { #category : 'initialization' }
 MicRuleHeadChecker >> verifyLowercase [
 
-	strategy := MicRuleLowercaseHeaderStrategy new.
+	strategy := MicRuleLowercaseHeadStrategy new.
 	strategy checker: self
 ]
 
 { #category : 'initialization' }
 MicRuleHeadChecker >> verifyUppercase [
 
-	strategy := MicRuleUppercaseHeaderStrategy new.
+	strategy := MicRuleUppercaseHeadStrategy new.
 	strategy checker: self
 ]
 

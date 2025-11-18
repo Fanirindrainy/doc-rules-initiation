@@ -7,26 +7,23 @@ Class {
 }
 
 { #category : 'visiting' }
-MicRuleUppercaseHeadStrategy >> checkRest: words of: aMicHeader rule: rule [
-	
-	"In the future we should manage that if a word finishes by : the following one must be captitalized
-	e.g., 'Today and tomorrow: The days' and not 
-	'Today and tomorrow: the days' 
-	"
-	| realWords |
-	realWords := words allButFirst reject: [ :each | rule uncapitalizableText includes: each ]. 
-	"note that we should verify two points not yet done 
-		Point 1 'To' in input should be reported as an error in both uppercase and lowercase
-		
-		Point 2 'to' should not be generate an error in uppercase setup. 
-		"
-	realWords
-		do: [ :word |	
-			 		word isCapitalized not
-						ifTrue: [  
-						checker addError: (MicElementOfHeaderIsNotCapitalizedReport new 
-									micElement: aMicHeader; 
-									concern: word;
-									inFile: aMicHeader fromFile) 
-						] ].
+MicRuleUppercaseHeadStrategy >> checkRest: words of: aMicHeader rule: aRule [
+	| stopwords |
+	stopwords := aRule uncapitalizableText collect: #asLowercase.
+
+	words allButFirst do: [:w |
+
+		"IGNORE STOPWORDS (same case or not)"
+		(stopwords includes: w asLowercase)
+			ifTrue: [ ^ self ].
+
+		"Word must be capitalized"
+		w first isLowercase
+			ifTrue: [
+				checker addError: (
+					MicElementOfHeaderIsNotCapitalizeReport new
+						micElement: aMicHeader;
+						concern: w;
+						inFile: aMicHeader fromFile) ] ].
+
 ]
