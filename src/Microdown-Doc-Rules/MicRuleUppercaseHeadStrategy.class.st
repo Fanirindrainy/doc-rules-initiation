@@ -20,10 +20,12 @@ MicRuleUppercaseHeadStrategy >> checkRest: words of: aMicHeader rule: aRule [
 		"Word must be capitalized"
 		w first isLowercase
 			ifTrue: [
-				checker addError: (
-					MicElementOfHeaderIsNotCapitalizeReport new
-						micElement: aMicHeader;
-						concern: w;
-						inFile: aMicHeader fromFile) ] ].
-
+				| report |
+				report := MicElementOfHeaderIsNotCapitalizeReport new 
+					micElement: aMicHeader;
+					concern: w;
+					yourself.
+				report file: aMicHeader fromFile.
+				checker addError: report
+				]].
 ]

@@ -169,7 +169,7 @@ MicHeaderCapitalTest >> testLowercaseIncorrectHeader [
     header := ast children first.
     checker visitHeader: header.
 
-    self assert: checker errors size equals: 1.
+    self assert: checker errors size equals: 2.
 
 ]
 
@@ -207,6 +207,6 @@ MicHeaderCapitalTest >> testUppercaseIncorrectHeader [
     header := ast children first.
     checker visitHeader: header.
 
-    self assert: checker errors size equals: 1.
+    self assert: checker errors size equals: 3.
 
 ]

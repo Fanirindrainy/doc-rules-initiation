@@ -9,7 +9,7 @@ Class {
 { #category : 'visiting' }
 MicRuleLowercaseHeadStrategy >> checkRest: words of: aMicHeader rule: aRule [
 	| stopwords |
-	stopwords := aRule ifAddDefaultNotCapitalized collect: #asLowercase.
+	stopwords := aRule unlowercasableText collect: #asLowercase.
 
 	words allButFirst do: [:w |
 
@@ -20,10 +20,12 @@ MicRuleLowercaseHeadStrategy >> checkRest: words of: aMicHeader rule: aRule [
 		"Word must NOT be capitalized"
 		w first isUppercase
 			ifTrue: [
-				checker addError: (
-					MicElementOfHeaderIsWronglyCapit new
-						micElement: aMicHeader;
-						concern: w;
-						inFile: aMicHeader fromFile) ] ].
-
+				| report |
+				report := MicElementOfHeaderIsNotCapitalizeReport new 
+					micElement: aMicHeader;
+					concern: w;
+					yourself.
+				report file: aMicHeader fromFile.
+				self checker addError: report
+				]].
 ]

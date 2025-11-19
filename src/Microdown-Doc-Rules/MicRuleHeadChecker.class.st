@@ -23,14 +23,15 @@ MicRuleHeadChecker >> addRule: aRule [
 
 { #category : 'visiting' }
 MicRuleHeadChecker >> checkFirstWord: aCollection of: anElement [
-	
-	aCollection first isCapitalized 
-		ifFalse: [ 
-			errors add: (MicFirstElementOfHeaderIsNotCapitalReport new 
-						micElement: anElement; 
-						concern: aCollection first;
-						inFile: anElement fromFile)			
-						]
+
+	| rep |
+	aCollection first isCapitalized ifTrue: [ ^ self ].
+	rep := MicFirstElementOfHeaderIsNotCapitalReport new
+		       micElement: anElement;
+		       concern: aCollection first;
+		       yourself.
+	(rep respondsTo: #file:) ifTrue: [ rep file: anElement fromFile ].
+	self addError: rep
 ]
 
 { #category : 'visiting' }

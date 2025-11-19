@@ -74,3 +74,10 @@ MicHeaderCapitalizeRule >> uncapitalizableText [
 	^ uncapitalizableText 
 	
 ]
+
+{ #category : 'stop words' }
+MicHeaderCapitalizeRule >> unlowercasableText [
+	
+	^ unlowercasableText 
+	
+]
